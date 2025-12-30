@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pilih Lokasi di Peta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+    }
+    #map {
+      height: 400px;
+      width: 100%;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h3>Pilih Lokasi Anda</h3>
+<p>Geser pin ke lokasi yang benar, lalu klik tombol di bawah.</p>
+
+<div id="map"></div>
+
+<button onclick="kirimLokasi()">Gunakan Lokasi Ini</button>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  let map;
+  let marker;
+
+  // Ambil lokasi GPS
+  navigator.geolocation.getCurrentPosition(
+    function (pos) {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+
+      map = L.map('map').setView([lat, lng], 17);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+    },
+    function () {
+      alert("GPS tidak aktif. Aktifkan lokasi di HP Anda.");
+    }
+  );
+
+  function kirimLokasi() {
+    const lat = marker.getLatLng().lat;
+    const lng = marker.getLatLng().lng;
+
+    // GANTI DENGAN LINK GOOGLE FORM ANDA
+    const formURL =
+      "https://docs.google.com/forms/d/e/FORM_ID/viewform" +
+      "?entry.111111=" + lat +
+      "&entry.222222=" + lng;
+
+    window.location.href = formURL;
+  }
+</script>
+
+</body>
+</html>
